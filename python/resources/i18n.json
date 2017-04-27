@@ -1,0 +1,67 @@
+{
+  "WELCOME_MESSAGE": {
+    "pt-br": "Aperte / e veja como adicionar usuários e despesas.",
+    "en-us": "Press / to see how to add users and expenses."
+  },
+  "ADD_USER_NAME": {
+    "pt-br": "Responda os dados logo em seguida. Primeiro insira o nome.",
+    "en-us": "Answer right after me. First insert the name"
+  },
+  "ADD_USER_BASE_VALUE": {
+    "pt-br": "Qual valor base do usuário?",
+    "en-us": "What is the user base value?"
+  },
+  "ADD_USER_BASE_VALUE_INVALID": {
+    "pt-br": "Valor base inválido. Insira somente numeros com ou sem centavos.",
+    "en-us": "Invalid base value. Insert only number with or without fraction."
+  },
+  "ADD_USER_EXIST": {
+    "pt-br": "Já existe um usuário com esse nome nessa conversa.",
+    "en-us": "Already exists a user with this name in this conversation."
+  },
+  "EDT_USER_NON_EXIST": {
+    "pt-br": "Não existe um usuário com esse nome.",
+    "en-us": "There's no user with this name."
+  },
+  "EDT_USER_SUCCESS": {
+    "pt-br": "Usuário editado.",
+    "en-us": "User edited."
+  },
+  "UNEXPECTED_ERROR": {
+    "pt-br": "Algo deu errado.",
+    "en-us": "Something went wrong."
+  },
+  "INVALID_PARAMETER": {
+    "pt-br": "Parâmetro(s) inválido(s).",
+    "en-us": "Invalid parameter(s)."
+  },
+  "CONNECTION_ERROR": {
+    "pt-br": "Problema de conexão, se persistir tente mais tarde.",
+    "en-us": "Connection problem, if persists try again later."
+  },
+  "SET_CHARGE_DAY": {
+    "pt-br": "Qual o dia para cobrança da mensalidade?",
+    "en-us": "What day to collect the monthly fee?"
+  },
+  "CANCEL": {
+    "pt-br": "Processo cancelado.",
+    "en-us": "Process canceled."
+  },
+  "SET_CHAT_LANGUAGE_INVALID": {
+    "pt-br": "Língua inválida, selecione uma do teclado.",
+    "en-us": "Invalid language, select it form the keyboard."
+  },
+  "SET_CHARGE_DAY_INVALID": {
+    "pt-br": "Dia inválido, selecione um do teclado",
+    "en-us": "Invalid day, select it form the keyboard."
+  },
+  "FINISHED": {
+    "pt-br": "Pronto.",
+    "en-us": "Live."
+  },
+  "ZERO_USERS": {
+    "pt-br": "Nenhum usuário cadastrado.",
+    "en-us": "No user registered.."
+  }
+}
+

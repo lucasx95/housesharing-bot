@@ -1,0 +1,7 @@
+start - Update language and/or charge date
+add_user - Interactive add a user
+edt_user_name - parameter: name new_name
+edt_user_base - parameter: name XX.XX
+activate_user - parameter: name
+deactivate_user - parameter: name
+get_users - get all active users of this chat
