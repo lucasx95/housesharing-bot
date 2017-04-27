@@ -6,7 +6,7 @@ from telegram import ForceReply, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler
 
 from python.code.helper.date_helper import get_month_from_update
-from python.code.helper.keyboards import DAYS_KEYBOARD, get_yes_no_keyboard_translated
+from python.code.helper.keyboards import get_days_keyboard, get_yes_no_keyboard_translated
 from python.code.helper.translator import translate
 from python.code.helper.validation import valid_yes_no, valid_day
 from python.code.model.entities import Expense, database, Charge
@@ -41,7 +41,7 @@ def add_expense_value(bot, update):
     expense = current_expense[chat_id]
     expense.set_value(update.message.text)
     update.message.reply_text(translate('ADD_EXPENSE_CHARGE_DAY', chat_id),
-                              reply_markup=DAYS_KEYBOARD,
+                              reply_markup=get_days_keyboard(),
                               one_time_keyboard=True)
     return ADD_EXPENSE_CHARGE_DAY
 
@@ -49,7 +49,7 @@ def add_expense_value(bot, update):
 # skip expense value
 def skip_value(bot, update):
     update.message.reply_text(translate('ADD_EXPENSE_CHARGE_DAY', update.message.chat_id),
-                              reply_markup=DAYS_KEYBOARD,
+                              reply_markup=get_days_keyboard(),
                               one_time_keyboard=True)
     return ADD_EXPENSE_CHARGE_DAY
 
@@ -89,7 +89,7 @@ def skip_charge_day(bot, update):
 # add expense value
 def add_expense_charge_day_invalid(bot, update):
     update.message.reply_text(translate('SET_DAY_INVALID', update.message.chat_id),
-                              reply_markup=DAYS_KEYBOARD,
+                              reply_markup=get_days_keyboard(),
                               one_time_keyboard=True)
     return ADD_EXPENSE_VALUE
 

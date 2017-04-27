@@ -1,16 +1,31 @@
 from telegram import ReplyKeyboardMarkup
 
-from python.code.helper.translator import TRANSLATION_OPTIONS, translate, translation_map
-
-# get supported languages keyboard
+from python.code.helper.translator import TRANSLATION_OPTIONS, translation_map
 from python.code.model.entities import Chat, DoesNotExist
 
-LANGUAGES_KEYBOARD = ReplyKeyboardMarkup(list(map(lambda lang: [lang], TRANSLATION_OPTIONS))
-                                         , one_time_keyboard=True)
+# get supported languages keyboard
+# language keyboard
+LANGUAGES_KEYBOARD = list(map(lambda lang: [lang], TRANSLATION_OPTIONS))
+
+
+# get languages keboard
+def get_languages_keyboard():
+    return ReplyKeyboardMarkup(LANGUAGES_KEYBOARD
+                               , one_time_keyboard=True)
+
+
+# days keybard
+DAYS_KEYBOARD = [list(map(lambda x: str(x).zfill(2), range(1, 10))), list(map(str, range(11, 20))),
+                 list(map(str, range(21, 30))), ['31'] + ['--'] * 9]
+
+
 # get days keyboard
-DAYS_KEYBOARD = ReplyKeyboardMarkup(
-    [map(str, range(1, 10)), map(str, range(11, 20)), map(str, range(21, 30)), ['31'] + ['  '] * 9]
-    , resize_keyboard=True)
+def get_days_keyboard():
+    return ReplyKeyboardMarkup(
+        DAYS_KEYBOARD
+        , resize_keyboard=True
+        , one_time_keyboard=True)
+
 
 # yes/no keyboard dict
 yes_no_keyboard_dict = {

@@ -2,13 +2,13 @@
 import logging
 
 from peewee import DoesNotExist
-from python.code.helper.translator import translate
 from telegram import ReplyKeyboardRemove
 from telegram.error import TimedOut, NetworkError, ChatMigrated, TelegramError, Unauthorized
 from telegram.ext import ConversationHandler
 
 from python.code.helper.date_helper import get_month_from_update
-from python.code.helper.keyboards import LANGUAGES_KEYBOARD, DAYS_KEYBOARD
+from python.code.helper.keyboards import get_languages_keyboard, get_days_keyboard
+from python.code.helper.translator import translate
 from python.code.model.entities import Chat, Charge
 from python.code.model.status import SET_CHAT_LANGUAGE, SET_CHARGE_DAY
 
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 def start(bot, update):
     update.message.reply_text(
         'What language do you want?',
-        reply_markup=LANGUAGES_KEYBOARD)
+        reply_markup=get_languages_keyboard())
     return SET_CHAT_LANGUAGE
 
 
@@ -36,7 +36,7 @@ def set_chat_language(bot, update):
     except DoesNotExist:
         Chat.create(chat_id=update.message.chat_id, language=update.message.text)
     update.message.reply_text(translate('SET_CHARGE_DAY', update.message.chat_id),
-                              reply_markup=DAYS_KEYBOARD,
+                              reply_markup=get_days_keyboard(),
                               one_time_keyboard=True)
     return SET_CHARGE_DAY
 
@@ -44,7 +44,7 @@ def set_chat_language(bot, update):
 # in case the response for language is not valid
 def set_chat_language_invalid(bot, update):
     update.message.reply_text(translate('SET_CHAT_LANGUAGE_INVALID', update.message.chat_id),
-                              reply_markup=LANGUAGES_KEYBOARD)
+                              reply_markup=get_languages_keyboard())
     return SET_CHAT_LANGUAGE
 
 
@@ -66,7 +66,7 @@ def set_charge_day(bot, update):
 # in case of invalid date
 def set_charge_day_invalid(bot, update):
     update.message.reply_text(translate('SET_DAY_INVALID', update.message.chat_id),
-                              reply_markup=DAYS_KEYBOARD)
+                              reply_markup=get_days_keyboard())
     return SET_CHARGE_DAY
 
 
