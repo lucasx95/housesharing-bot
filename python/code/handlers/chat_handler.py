@@ -2,15 +2,15 @@
 import logging
 
 from peewee import DoesNotExist
+from python.code.helper.translator import translate
 from telegram import ReplyKeyboardRemove
-from telegram.error import Unauthorized, BadRequest, TimedOut, NetworkError, ChatMigrated, TelegramError
+from telegram.error import TimedOut, NetworkError, ChatMigrated, TelegramError, Unauthorized
 from telegram.ext import ConversationHandler
 
+from python.code.helper.date_helper import get_month_from_update
+from python.code.helper.keyboards import LANGUAGES_KEYBOARD, DAYS_KEYBOARD
 from python.code.model.entities import Chat, Charge
 from python.code.model.status import SET_CHAT_LANGUAGE, SET_CHARGE_DAY
-from python.resources.keyboards import LANGUAGES_KEYBOARD, DAYS_KEYBOARD
-
-from python.resources.translator import translate
 
 # enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -27,7 +27,7 @@ def start(bot, update):
     return SET_CHAT_LANGUAGE
 
 
-# set the language and ask for the chargin day
+# set the language and ask for the charge_day
 def set_chat_language(bot, update):
     try:
         chat = Chat.get(Chat.chat_id == update.message.chat_id)
@@ -50,11 +50,11 @@ def set_chat_language_invalid(bot, update):
 
 # set the charge day
 def set_charge_day(bot, update):
-    reference_month = str(update.message.date.month).zfill(2) + '/' + str(update.message.date.year)
+    reference_month = get_month_from_update(update)
     try:
         charge = Charge. \
             get(Charge.chat_id == update.message.chat_id, Charge.reference_month == reference_month)
-        charge.reference_month = update.message.text
+        charge.charge_day = update.message.text
         charge.save()
     except DoesNotExist:
         Charge.create(chat_id=update.message.chat_id, reference_month=reference_month, charge_day=update.message.text)
@@ -65,7 +65,7 @@ def set_charge_day(bot, update):
 
 # in case of invalid date
 def set_charge_day_invalid(bot, update):
-    update.message.reply_text(translate('SET_CHARGE_DAY_INVALID', update.message.chat_id),
+    update.message.reply_text(translate('SET_DAY_INVALID', update.message.chat_id),
                               reply_markup=DAYS_KEYBOARD)
     return SET_CHARGE_DAY
 
@@ -74,6 +74,11 @@ def set_charge_day_invalid(bot, update):
 def cancel(bot, update):
     update.message.reply_text(translate('CANCEL', update.message.chat_id))
     return ConversationHandler.END
+
+
+# cancel without conversation
+def cancel_none(bot, update):
+    update.message.reply_text(translate('CANCEL_NONE', update.message.chat_id))
 
 
 # parameter invalid
@@ -86,6 +91,13 @@ def error(bot, update, error):
     chat_id = update.message.chat_id
     try:
         raise error
+    # remove chat from db
+    except Unauthorized:
+        try:
+            chat = Chat.get(Chat.chat_id == chat_id)
+            chat.delete_instance()
+        except DoesNotExist:
+            logger.warning('Update "%s" caused error "%s"' % (update, error))
     # for network problems answer CONNECTION_ERROR
     except (TimedOut, NetworkError):
         update.message.reply_text(translate('CONNECTION_ERROR', chat_id))
@@ -94,6 +106,7 @@ def error(bot, update, error):
         chat = Chat.get(Chat.chat_id == chat_id)
         chat.chat_id = e.new_chat_id
         chat.save()
-    # in case of other error UNEXPECTED_ERROR
+    # in case of other error UNEXPECTED_ERROR and log
     except TelegramError:
         update.message.reply_text(translate('UNEXPECTED_ERROR', chat_id))
+        logger.warning('Update "%s" caused error "%s"' % (update, error))

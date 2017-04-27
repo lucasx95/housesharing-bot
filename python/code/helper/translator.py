@@ -17,6 +17,7 @@ def get_translation_map():
 translation_map = get_translation_map()  # translate a key
 
 
+# translate key for chat
 def translate(key, chat_id):
     try:
         return translation_map[key][Chat.get(Chat.chat_id == chat_id).language]

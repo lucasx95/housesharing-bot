@@ -1,7 +1,15 @@
 start - Update language and/or charge date
 add_user - Interactive add a user
-edt_user_name - parameter: name new_name
-edt_user_base - parameter: name XX.XX
-activate_user - parameter: name
-deactivate_user - parameter: name
+edit_user_name - parameter: user_name new_name
+edit_user_base - parameter: user_name XX.XX
+activate_user - parameter: user_name
+deactivate_user - parameter: user_name
 get_users - get all active users of this chat
+add_expense - Interactive add a expense
+get_expenses - get all expenses names
+enable_recurrence -  parameter: expense_name
+disable_recurrence - parameter: expense_name
+delete_expense - parameter: expense_name
+edit_expense_value - parameter: expense_name XX.XX MM/AAAA(optional month)
+edit_expense_day - parameter: expense_name new_day MM/AAAA(optional month)
+pay_expense - parameter: expense_name MM/AAAA(optional month)

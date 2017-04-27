@@ -11,17 +11,17 @@
     "pt-br": "Qual valor base do usuário?",
     "en-us": "What is the user base value?"
   },
-  "ADD_USER_BASE_VALUE_INVALID": {
-    "pt-br": "Valor base inválido. Insira somente numeros com ou sem centavos.",
-    "en-us": "Invalid base value. Insert only number with or without fraction."
+  "SET_VALUE_INVALID": {
+    "pt-br": "Insira somente numeros com ou sem centavos.",
+    "en-us": "Insert only number with or without decimal."
   },
   "ADD_USER_EXIST": {
-    "pt-br": "Já existe um usuário com esse nome nessa conversa.",
-    "en-us": "Already exists a user with this name in this conversation."
+    "pt-br": "Já existe um usuário com esse nome.",
+    "en-us": "Already exists a user with this name."
   },
   "EDT_USER_NON_EXIST": {
     "pt-br": "Não existe um usuário com esse nome.",
-    "en-us": "There's no user with this name."
+    "en-us": "User does not exist."
   },
   "EDT_USER_SUCCESS": {
     "pt-br": "Usuário editado.",
@@ -40,28 +40,92 @@
     "en-us": "Connection problem, if persists try again later."
   },
   "SET_CHARGE_DAY": {
-    "pt-br": "Qual o dia para cobrança da mensalidade?",
-    "en-us": "What day to collect the monthly fee?"
+    "pt-br": "Qual o dia para fechar o mês?",
+    "en-us": "What day to close the month?"
   },
   "CANCEL": {
     "pt-br": "Processo cancelado.",
     "en-us": "Process canceled."
   },
+  "CANCEL_NONE": {
+    "pt-br": "Nenhum processo em andamento.",
+    "en-us": "There is no process running."
+  },
   "SET_CHAT_LANGUAGE_INVALID": {
     "pt-br": "Língua inválida, selecione uma do teclado.",
     "en-us": "Invalid language, select it form the keyboard."
   },
-  "SET_CHARGE_DAY_INVALID": {
+  "SET_DAY_INVALID": {
     "pt-br": "Dia inválido, selecione um do teclado",
     "en-us": "Invalid day, select it form the keyboard."
   },
   "FINISHED": {
     "pt-br": "Pronto.",
-    "en-us": "Live."
+    "en-us": "Done."
   },
   "ZERO_USERS": {
     "pt-br": "Nenhum usuário cadastrado.",
     "en-us": "No user registered.."
+  },
+  "ADD_EXPENSE_NAME": {
+    "pt-br": "Responda os dados logo em seguida. Primeiro insira o nome da despesa.",
+    "en-us": "Answer right after me. First insert the expense name."
+  },
+  "ADD_EXPENSE_EXIST": {
+    "pt-br": "Já existe uma despesa com esse nome.",
+    "en-us": "Already exists a expense with this."
+  },
+  "ADD_EXPENSE_CHARGE_DAY": {
+    "pt-br": "Insira o dia para alertar, caso não queira ser alertado /skip.",
+    "en-us": "Insert the alert day, if don't want to be alerted /skip"
+  },
+  "ADD_EXPENSE_VALUE": {
+    "pt-br": "Insira o valor, /skip caso deseja definir o valor junto com o alerta.",
+    "en-us": "Insert the expense value, /skip in case you want to set it with the alert."
+  },
+  "ADD_EXPENSE_NONE_VALUE": {
+    "pt-br": "Despesas sem valor precisam de dia de alerta",
+    "en-us": "Expenses without value need a alert day"
+  },
+  "ADD_EXPENSE_RECURRENT": {
+    "pt-br": "É recorrente?",
+    "en-us": "Is it recurrent?"
+  },
+  "EDIT_EXPENSE_SUCCESS": {
+    "pt-br": "Despesa editada.",
+    "en-us": "Expense edited."
+  },
+  "DELETE_EXPENSE": {
+    "pt-br": "Despesa deletada.",
+    "en-us": "Expense deleted."
+  },
+  "EMPTY_EXPENSES": {
+    "pt-br": "Nenhuma despesa.",
+    "en-us": "None expense registered."
+  },
+  "EDIT_EXPENSE_ERROR": {
+    "pt-br": "Despesa não existe.",
+    "en-us": "Expense does not exist."
+  },
+  "PAY_WITHOUT_VALUE": {
+    "pt-br": "Não é possível pagar despesa sem valor. Use /edit_expense_value .",
+    "en-us": "It's not possible to pay a value less expense. Use /edit_expense_value."
+  },
+  "YES": {
+    "pt-br": "Sim",
+    "en-us": "Yes"
+  },
+  "NO": {
+    "pt-br": "Não",
+    "en-us": "No"
+  },
+  "YES_NO_INVALID": {
+    "pt-br": "Clique Sim/Não no teclado.",
+    "en-us": "Click Yes/No on keyboard."
+  },
+  "FAROFA_MESSAGE": {
+    "pt-br": "plç;;;;;;;;;;;;;;;;;;;;;6y777777777777777777777777777777777777777777777777777777777777/i9uuuuuu",
+    "en-us": "plç;;;;;;;;;;;;;;;;;;;;;6y777777777777777777777777777777777777777777777777777777777777/i9uuuuuu"
   }
 }
 

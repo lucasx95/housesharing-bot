@@ -1,13 +1,13 @@
 # methods for user related actions and conversation
-from _decimal import Decimal, InvalidOperation
+from _decimal import InvalidOperation
 
-from peewee import InternalError, IntegrityError, DoesNotExist
+from peewee import IntegrityError, DoesNotExist
 from telegram import ForceReply, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler
 
+from python.code.helper.translator import translate
 from python.code.model.entities import User, database
 from python.code.model.status import ADD_USER_NAME, ADD_USER_BASE_VALUE
-from python.resources.translator import translate
 
 current_user = {}
 
@@ -45,7 +45,7 @@ def add_user_base_value(bot, update):
 
 # add user base_value invalid
 def add_user_base_value_invalid(bot, update):
-    update.message.reply_text(translate('ADD_USER_BASE_VALUE_INVALID', update.message.chat_id),
+    update.message.reply_text(translate('SET_VALUE_INVALID', update.message.chat_id),
                               reply_markup=ForceReply())
     return ADD_USER_BASE_VALUE
 
@@ -108,7 +108,18 @@ def deactivate_user(bot, update, args):
 def get_users(bot, update):
     query = User.select().where(User.chat_id == update.message.chat_id, User.active)
     update.message.reply_text(
+        'Nome - Valor Base\n' +
         '\n'.join(
-            map(lambda user: user.name + ' ' + str(user.base_value), query))
+            map(lambda user: user.name + ' - ' + str(user.base_value), query))
         if query.count() > 0
         else translate('ZERO_USERS', update.message.chat_id))
+
+
+# cancel user
+def cancel_user(bot, update):
+    chat_id = update.message.chat_id
+    user = current_user.pop(chat_id, None)
+    if user:
+        user.delete_instance()
+    update.message.reply_text(translate('CANCEL', update.message.chat_id))
+    return ConversationHandler.END

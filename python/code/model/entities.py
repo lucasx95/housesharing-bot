@@ -3,7 +3,6 @@ from _decimal import Decimal
 
 from peewee import *
 from playhouse.fields import ManyToManyField
-from telegram import update
 
 from python.resources import properties
 
@@ -45,12 +44,27 @@ class Charge(BaseModel):
     reference_month = CharField()
     users = ManyToManyField(User)
 
+    class Meta:
+        indexes = (
+            (('chat_id', 'reference_month'), True),  # cant have two charges for same month and chat
+        )
+
 
 class Expense(BaseModel):
     name = CharField()
-    charge_day = IntegerField()
-    paid = BooleanField()
-    charge = ForeignKeyField(Charge, related_name='expenses')
+    value = BigIntegerField(null=True)
+    charge_day = IntegerField(null=True)
+    paid = BooleanField(null=True)
+    recurrent = BooleanField(null=True)
+    charge = ForeignKeyField(Charge, related_name='expenses', null=True)
+
+    def set_value(self, value):
+        self.value = round(Decimal(value), ndigits=2)
+
+    class Meta:
+        indexes = (
+            (('chat_id', 'name', 'charge'), True),  # cant have expense with same name and chat_id and charge
+        )
 
 
 UserCharge = Charge.users.get_through_model()

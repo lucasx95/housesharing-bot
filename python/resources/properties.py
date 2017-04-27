@@ -1,7 +1,7 @@
 # properties file
 
 #  Key for telegram bot
-api_key = '359164270:AAGjI07cydhpL-4PtvYIKRFiEhGEld-2MN4'
+api_key = '359164270:AAEWiE-hRW688grv-7Au1ZFrf2rTzUR2ImA'
 
 # Databse configurations
 db = {
