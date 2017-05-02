@@ -1,5 +1,4 @@
 # Model management class
-from _decimal import Decimal
 
 from peewee import *
 from playhouse.fields import ManyToManyField
@@ -27,11 +26,8 @@ class Chat(BaseModel):
 # Housesharing related entities
 class User(BaseModel):
     name = CharField(null=True)
-    base_value = BigIntegerField(null=True)
+    base_value = DecimalField(decimal_places=2, auto_round=True, null=True)
     active = BooleanField()
-
-    def set_base_value(self, value):
-        self.base_value = round(Decimal(value), ndigits=2)
 
     class Meta:
         indexes = (
@@ -52,14 +48,11 @@ class Charge(BaseModel):
 
 class Expense(BaseModel):
     name = CharField()
-    value = BigIntegerField(null=True)
+    value = DecimalField(decimal_places=2, auto_round=True, null=True)
     charge_day = IntegerField(null=True)
     paid = BooleanField(null=True)
     recurrent = BooleanField(null=True)
     charge = ForeignKeyField(Charge, related_name='expenses', null=True)
-
-    def set_value(self, value):
-        self.value = round(Decimal(value), ndigits=2)
 
     class Meta:
         indexes = (
@@ -71,4 +64,4 @@ UserCharge = Charge.users.get_through_model()
 
 # Drop tables
 # database.drop_tables([User, Expense, Charge, Chat], cascade=True)
-database.create_tables([User, Expense, Charge, Chat], safe=True)
+database.create_tables([User, Expense, Charge, Chat, UserCharge], safe=True)

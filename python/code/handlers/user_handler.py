@@ -37,7 +37,7 @@ def add_user_base_value(bot, update):
     chat_id = update.message.chat_id
     update.message.reply_text(translate('FINISHED', chat_id), reply_markup=ReplyKeyboardRemove())
     user = current_user[chat_id]
-    user.set_base_value(update.message.text)
+    user.base_value = update.message.text
     user.save()
     current_user.pop(chat_id)
     return ConversationHandler.END
@@ -68,7 +68,7 @@ def edit_user_base_value(bot, update, args):
     name, base_value = args
     try:
         user = User.get(User.chat_id == update.message.chat_id, User.name == name)
-        user.set_base_value(base_value)
+        user.base_value = base_value
         user.save()
         reply_text = translate('EDT_USER_SUCCESS', update.message.chat_id)
     except DoesNotExist:

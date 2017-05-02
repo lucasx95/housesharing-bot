@@ -1,6 +1,7 @@
 # handlers dict method
 from telegram.ext import *
 
+from python.code.handlers.charge_handler import get_charge_individual_value
 from python.code.handlers.chat_handler import *
 from python.code.handlers.expense_handler import *
 from python.code.handlers.user_handler import *
@@ -40,7 +41,7 @@ handlers = {
     'edit_user_base': CommandHandler('edit_user_base', edit_user_base_value, pass_args=True),
     'activate_user': CommandHandler('activate_user', activate_user, pass_args=True),
     'deactivate_user': CommandHandler('deactivate_user', deactivate_user, pass_args=True),
-    'get_users': CommandHandler('get_users', get_users),
+    'show_users': CommandHandler('show_users', get_users),
     # expenses handlers
     'add_expense': ConversationHandler(
         entry_points=[CommandHandler('add_expense', add_expense_start)],
@@ -56,12 +57,15 @@ handlers = {
         },
         fallbacks=[CommandHandler('cancel', cancel_expense)]
     ),
-    'get_expenses': CommandHandler('get_expenses', get_all_expenses),
+    'show_expenses': CommandHandler('show_expenses', get_all_expenses),
     'enable_recurrence': CommandHandler('enable_recurrence', enable_recurrence, pass_args=True),
     'disable_recurrence': CommandHandler('disable_recurrence', disable_recurrence, pass_args=True),
     'delete_expense': CommandHandler('delete_expense', delete_expense, pass_args=True),
     'edit_expense_value': CommandHandler('edit_expense_value', edit_expense_value, pass_args=True),
     'edit_expense_day': CommandHandler('edit_expense_day', edit_expense_charge_day, pass_args=True),
-    'pay_expense': CommandHandler('pay_expense', pay_expense, pass_args=True)
+    'pay_expense': CommandHandler('pay_expense', pay_expense, pass_args=True),
+    'late_expenses': CommandHandler('late_expenses', late_expenses),
+    # charge handlers
+    'show_charge': CommandHandler('show_charge', get_charge_individual_value, pass_args=True)
 
 }

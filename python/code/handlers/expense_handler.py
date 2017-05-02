@@ -5,7 +5,7 @@ from peewee import IntegrityError, DoesNotExist
 from telegram import ForceReply, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler
 
-from python.code.helper.date_helper import get_month_from_update
+from python.code.helper.date_helper import get_month_from_update, get_month_from_args, get_view_reference_month
 from python.code.helper.keyboards import get_days_keyboard, get_yes_no_keyboard_translated
 from python.code.helper.translator import translate
 from python.code.helper.validation import valid_yes_no, valid_day
@@ -39,7 +39,7 @@ def add_expense_name(bot, update):
 def add_expense_value(bot, update):
     chat_id = update.message.chat_id
     expense = current_expense[chat_id]
-    expense.set_value(update.message.text)
+    expense.value = update.message.text
     update.message.reply_text(translate('ADD_EXPENSE_CHARGE_DAY', chat_id),
                               reply_markup=get_days_keyboard(),
                               one_time_keyboard=True)
@@ -102,9 +102,9 @@ def add_expense_recurrent(bot, update):
     expense = current_expense[chat_id]
     expense.recurrent = (translate('YES', chat_id) == update.message.text)
     try:
-        charge = Charge.select(Charge.id).where(Charge.chat_id == chat_id) \
+        charge = Charge.select().where(Charge.chat_id == chat_id) \
             .order_by(Charge.reference_month.desc()).get()
-        expense.charge_id = charge.id
+        expense.charge = charge
     except DoesNotExist:
         update.message.reply_text('Run /start to initiate the bot')
 
@@ -132,6 +132,23 @@ def get_all_expenses(bot, update):
         '\n'.join(list(map(lambda exp: exp.name, expenses)))
         if len(expenses) > 0
         else translate('EMPTY_EXPENSES', chat_id))
+
+
+# late expenses
+def late_expenses(bot, update):
+    chat_id = update.message.chat_id
+    expenses = Expense.select(Expense.name).distinct() \
+        .where(Expense.chat_id == chat_id, not Expense.paid,
+               Expense.charge.reference_month < get_month_from_update(update) or
+               (Expense.charge.reference_month == get_month_from_update(update) and
+                Expense.charge_day < update.message.date.day))
+    update.message.reply_text(
+        '\n'.join(list(
+            map(lambda exp: exp.name + translate('OF_BETWEEN', chat_id) + get_view_reference_month(
+                exp.charge.reference_month),
+                expenses)))
+        if len(expenses) > 0
+        else translate('EMPTY_EXPENSES_UNPAID', chat_id))
 
 
 # enable recurrence for expense
@@ -169,13 +186,13 @@ def disable_recurrence(bot, update, args):
 # change value recurrence for expense
 def edit_expense_value(bot, update, args):
     chat_id = update.message.chat_id
-    name, value = args[0:2]
-    reference_month = args[2] if len(args) > 2 else get_month_from_update(update)
+    name, value = args[:2]
+    reference_month = get_month_from_args(args, 2, update)
     try:
         expense = Expense.get(Expense.chat_id == chat_id, Expense.name == name,
                               Expense.charge == Charge.get(Charge.chat_id == chat_id,
-                                                           Charge.reference_month == get_month_from_update(update)))
-        expense.set_value(value)
+                                                           Charge.reference_month == reference_month))
+        expense.value = value
         expense.save()
         reply_text = translate('EDIT_EXPENSE_SUCCESS', chat_id)
     except DoesNotExist:
@@ -189,7 +206,7 @@ def edit_expense_value(bot, update, args):
 def edit_expense_charge_day(bot, update, args):
     chat_id = update.message.chat_id
     name, day = args[0:2]
-    reference_month = args[2] if len(args) > 2 else get_month_from_update(update)
+    reference_month = get_month_from_args(args, 2, update)
     if not valid_day(day):
         reply_text = translate('INVALID_PARAMETER', update.message.chat_id)
     else:
@@ -209,7 +226,7 @@ def edit_expense_charge_day(bot, update, args):
 def pay_expense(bot, update, args):
     chat_id = update.message.chat_id
     name = args[0]
-    reference_month = args[1] if len(args) > 1 else get_month_from_update(update)
+    reference_month = get_month_from_args(args, 1, update)
     try:
         expense = Expense.get(Expense.chat_id == chat_id, Expense.name == name,
                               Expense.charge == Charge.get(Charge.chat_id == chat_id,

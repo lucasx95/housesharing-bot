@@ -10,8 +10,7 @@ LANGUAGES_KEYBOARD = list(map(lambda lang: [lang], TRANSLATION_OPTIONS))
 
 # get languages keboard
 def get_languages_keyboard():
-    return ReplyKeyboardMarkup(LANGUAGES_KEYBOARD
-                               , one_time_keyboard=True)
+    return ReplyKeyboardMarkup(LANGUAGES_KEYBOARD, one_time_keyboard=True)
 
 
 # days keybard
@@ -37,7 +36,9 @@ yes_no_keyboard_dict = {
 # get the translated yes/no keyboard
 def get_yes_no_keyboard_translated(chat_id):
     try:
-        return ReplyKeyboardMarkup(yes_no_keyboard_dict[Chat.get(Chat.chat_id == chat_id).language])
+        return ReplyKeyboardMarkup(yes_no_keyboard_dict[Chat.get(Chat.chat_id == chat_id).language]
+                                   , resize_keyboard=True
+                                   , one_time_keyboard=True)
     except KeyError:
         return ReplyKeyboardMarkup(yes_no_keyboard_dict['en-us'])  # english keyboard
     except DoesNotExist:
